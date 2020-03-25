@@ -1,0 +1,54 @@
+{
+	"name": "@elijahjcobb/covid19",
+	"version": "1.0.0",
+	"description": "A typescript networking library to access WHO data about the 2019 covid19 virus.",
+	"keywords": [
+		"typescript",
+		"corona",
+		"virus",
+		"covid",
+		"covid19",
+		"19",
+		"api",
+		"cdc",
+		"who"
+	],
+	"main": "js/index",
+	"types": "dts/index",
+	"files": [
+		"js",
+		"dts"
+	],
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"prepublishOnly": "npm run compile",
+		"compile": "npm run clean && /usr/local/bin/tsc -p tsconfig.json",
+		"watch": "tsc -w -p .",
+		"clean": "rm -rf js && rm -rf dts",
+		"start": "node js/index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/elijahjcobb/covid19.git"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"author": "Elijah Cobb <elijah@elijahcobb.com> (https://elijahcobb.com/)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/elijahjcobb/covid19/issues"
+	},
+	"homepage": "https://github.com/elijahjcobb/covid19#readme",
+	"dependencies": {
+		"@element-ts/palladium": "latest"
+	},
+	"devDependencies": {
+		"@types/node": "latest",
+		"typescript": "latest",
+		"tslint": "latest",
+		"jest": "latest",
+		"@types/jest": "latest",
+		"@types/request": "latest"
+	}
+}
