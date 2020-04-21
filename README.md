@@ -1,6 +1,8 @@
 # covid19
 A typescript networking library to access WHO data about the 2019 covid19 virus.
 
+[Buy me a coffee! :)](https://www.buymeacoffee.com/elijahjcobb)
+
 ## Credit
 [https://github.com/javieraviles/covidAPI]()
 
