@@ -1,84 +1,110 @@
-import {Covid19, Country, Global, Report} from "../index";
+import {
+	Covid19,
+	Covid19Country,
+	Covid19CountryDaily,
+	Covid19ProvinceDaily,
+	Covid19RegionDaily,
+	Covid19Summary
+} from "../index";
 
-describe("Country", (): void => {
+jest.setTimeout(1000000);
 
-	test("Variable Based", async(): Promise<void> => {
+test("getAllCountries", async(): Promise<void> => {
 
-		const country: Country = await Covid19.getCountry("Italy");
-		expect(country).toBeDefined();
-		expect(country.country).toEqual("Italy");
-		expect(country.cases).toBeGreaterThan(0);
+	const countries: Covid19Country[] = await Covid19.getAllCountries();
 
-	});
+	for (const c of countries) {
 
-	test("USA", async(): Promise<void> => {
-
-		const country: Country = await Covid19.getUnitedStates();
-		expect(country).toBeDefined();
-		expect(country.country).toEqual("USA");
-		expect(country.cases).toBeGreaterThan(0);
-
-	});
-
-	test("Undefined", async(): Promise<void> => {
-
-		let didThrow: boolean = false;
-
-		try {
-			await Covid19.getCountry("32900239fk2039fk09kpok");
-		} catch (e) {
-			didThrow = true;
-		}
-
-		expect(didThrow).toBeTruthy();
-
-	});
-
-});
-
-function testGlobal(global: Global): void {
-	expect(global).toBeDefined();
-	expect(global.cases).toBeDefined();
-	expect(global.deaths).toBeDefined();
-	expect(global.recovered).toBeDefined();
-	expect(global.cases).toBeGreaterThan(0);
-	expect(global.deaths).toBeGreaterThan(0);
-	expect(global.recovered).toBeGreaterThan(0);
-}
-
-test("Global", async(): Promise<void> => {
-
-	const global: Global = await Covid19.getGlobal();
-	testGlobal(global);
-
-});
-
-function testCountries(countries: Country[]): void {
-
-	expect(countries).toBeDefined();
-	expect(countries.length).toBeGreaterThan(0);
-
-	for (const country of countries) {
-
-		expect(country).toBeDefined();
-		expect(country.country).toBeDefined();
+		expect(c.name).toBeDefined();
+		expect(c.name.length).toBeGreaterThan(0);
+		expect(c.id).toBeDefined();
+		expect(c.id.length).toBeGreaterThan(0);
 
 	}
 
-}
+});
 
-test("All Countries", async(): Promise<void> => {
+test("summary", async(): Promise<void> => {
 
-	const countries: Country[] = await Covid19.getAllCountries();
-	testCountries(countries);
+	const summary: Covid19Summary = await Covid19.getSummary();
+
+	expect(summary).toBeDefined();
+	expect(summary.global).toBeDefined();
+	expect(summary.global.recovered).toBeDefined();
+	expect(summary.global.deaths).toBeDefined();
+	expect(summary.global.confirmed).toBeDefined();
+	expect(summary.global.recovered.total).toBeGreaterThanOrEqual(summary.global.recovered.new);
+	expect(summary.global.deaths.total).toBeGreaterThanOrEqual(summary.global.deaths.new);
+	expect(summary.global.confirmed.total).toBeGreaterThanOrEqual(summary.global.confirmed.new);
+
+	expect(summary.countries).toBeDefined();
+
+	for (const c of summary.countries) {
+
+		expect(c.date).toBeDefined();
+		expect(c.id).toBeDefined();
+		expect(c.recovered).toBeDefined();
+		expect(c.deaths).toBeDefined();
+		expect(c.confirmed).toBeDefined();
+		expect(c.recovered.total).toBeGreaterThanOrEqual(c.recovered.new);
+		expect(c.deaths.total).toBeGreaterThanOrEqual(c.deaths.new);
+		expect(c.confirmed.total).toBeGreaterThanOrEqual(c.confirmed.new);
+
+	}
 
 });
 
-test("Report", async(): Promise<void> => {
+test("daily", async(): Promise<void> => {
 
-	const report: Report = await Covid19.get();
+	const days: Covid19CountryDaily[] = await Covid19.getDailyForCountry("united-states");
+	expect(days.length).toBeGreaterThan(1);
 
-	testGlobal(report.global);
-	testCountries(report.countries);
+	for (const d of days) {
+		expect(d.confirmed).toBeDefined();
+		expect(d.recovered).toBeDefined();
+		expect(d.deaths).toBeDefined();
+		expect(d.date).toBeDefined();
+		expect(d.active).toBeDefined();
+	}
+
+});
+
+test("provinces", async(): Promise<void> => {
+
+	const provinces: Covid19ProvinceDaily[] = await Covid19.getDailyForProvincesInCountry("united-states");
+	expect(provinces.length).toBeGreaterThan(1);
+
+	for (const p of provinces) {
+
+		expect(p.province).toBeDefined();
+		expect(p.recovered).toBeDefined();
+		expect(p.deaths).toBeDefined();
+		expect(p.confirmed).toBeDefined();
+		expect(p.active).toBeDefined();
+		expect(p.country).toBeDefined();
+		expect(p.date).toBeDefined();
+
+	}
+
+});
+
+test("regions", async(): Promise<void> => {
+
+	const regions: Covid19RegionDaily[] = await Covid19.getDailyForRegionsInCountry("united-states");
+	expect(regions.length).toBeGreaterThan(1);
+
+	for (const r of regions) {
+
+		expect(r.province).toBeDefined();
+		expect(r.recovered).toBeDefined();
+		expect(r.deaths).toBeDefined();
+		expect(r.confirmed).toBeDefined();
+		expect(r.active).toBeDefined();
+		expect(r.country).toBeDefined();
+		expect(r.date).toBeDefined();
+		expect(r.city).toBeDefined();
+		expect(r.lat).toBeDefined();
+		expect(r.lng).toBeDefined();
+	}
 
 });
