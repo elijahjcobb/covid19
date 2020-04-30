@@ -1,6 +1,6 @@
 # covid19
 A Typescript package to access up to date statistics on the 2019 Corona Virus. Data from this package is from the
-[John Hopkins CSSE](https://github.com/CSSEGISandData/COVID-19) and made accessible by the
+[John Hopkins CSSE](https://github.com/CSSEGISandData/COVID-19) and made accessible by
 [covid19api.com](https://covid19api.com/). I have simply written a Typescript package that handles the networking from
 the API. Everything is typesafe and properties have been restructured to make it a little easier to access the data
 you need.
